@@ -1,14 +1,4 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-body {
-  overflow: hidden;
-}
-canvas {
- /* Begin SnapBuilder Colorful Background Gradient */
-.colorful {
+
 	background:
 -webkit-linear-gradient(45deg, hsla(106, 95%, 44%, 1) 0%, hsla(106, 95%, 44%, 0) 70%),
 -webkit-linear-gradient(315deg, hsla(234, 97%, 45%, 1) 10%, hsla(234, 97%, 45%, 0) 80%),
