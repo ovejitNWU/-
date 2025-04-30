@@ -4,10 +4,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 const playerImage = new Image();
-playerImage.src = 'https://i.ibb.co/YZjqFxS/army-guy.png'; // Replace with your army character image
+playerImage.src = 'https://ibb.co.com/99mtkVKW/player.png'; // Replace with your army character image
 
 const enemyImage = new Image();
-enemyImage.src = 'https://i.ibb.co/MnQDd0K/enemy.png'; // Replace with your enemy character image
+enemyImage.src = 'https://ibb.co.com/4wP7PbDD/enemy.png'; // Replace with your enemy character image
 
 const player = {
   x: canvas.width / 2 - 20,
