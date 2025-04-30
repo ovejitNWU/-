@@ -1,13 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shooting Game</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>গুলি করার খেলা</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { overflow: hidden; }
+    canvas {
+      display: block;
+      background-image: url('https://media-hosting.imagekit.io/15ed084b0d424cf0/ChatGPT%20Image%20May%201,%202025,%2002_45_13%20AM.png');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
 </head>
 <body>
-  <canvas id="gameCanvas"></canvas>
-  <script src="script.js"></script>
+<canvas id="gameCanvas"></canvas>
+<script>
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const playerImage = new Image();
+  playerImage.src = 'https://media-hosting.imagekit.io/e755427c79eb437a/fca438e2-209e-4886-a4b7-0fabef851946.jfif';
+
+  const enemyImage = new Image();
+  enemyImage.src = 'https://media-hosting.imagekit.io/7f1cc37fd91e478b/485059759_122117149148734099_1172890305686142538_n.jpg';
+
+  const player = {
+    x: canvas.width / 2 - 20,
+    y: canvas.height - 100,
+    width: 40,
+    height: 40,
+    speed: 6
+  };
+
+  const bullets = [];
+  const enemies = [];
+  let score = 0;
+
+  function drawPlayer() {
+    ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+  }
+
+  function drawBullets() {
+    bullets.forEach((b, i) => {
+      b.y -= 10;
+      ctx.fillStyle = 'yellow';
+      ctx.fillRect(b.x, b.y, 5, 10);
+      if (b.y < 0) bullets.splice(i, 1);
+    });
+  }
+
+  function drawEnemies() {
+    enemies.forEach((e, i) => {
+      e.y += e.speed;
+      ctx.drawImage(enemyImage, e.x, e.y, 40, 40);
+      if (e.y > canvas.height) enemies.splice(i, 1);
+    });
+  }
+
+  function detectHits() {
+    enemies.forEach((e, ei) => {
+      bullets.forEach((b, bi) => {
+        if (
+          b.x < e.x + 40 &&
+          b.x + 5 > e.x &&
+          b.y < e.y + 40 &&
+          b.y + 10 > e.y
+        ) {
+          enemies.splice(ei, 1);
+          bullets.splice(bi, 1);
+          score++;
+          if (score === 3) {
+            alert("জয় বাংলা!");
+          }
+        }
+      });
+    });
+  }
+
+  function movePlayer(keys) {
+    if (keys['ArrowLeft']) player.x -= player.speed;
+    if (keys['ArrowRight']) player.x += player.speed;
+    if (player.x < 0) player.x = 0;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+  }
+
+  const keys = {};
+  document.addEventListener('keydown', (e) => {
+    keys[e.key] = true;
+    if (e.key === ' ') {
+      bullets.push({ x: player.x + player.width / 2 - 2.5, y: player.y });
+    }
+  });
+  document.addEventListener('keyup', (e) => keys[e.key] = false);
+
+  function spawnEnemy() {
+    const x = Math.random() * (canvas.width - 40);
+    enemies.push({ x: x, y: -40, speed: 2 + Math.random() * 2 });
+  }
+  setInterval(spawnEnemy, 1500);
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    movePlayer(keys);
+    drawPlayer();
+    drawBullets();
+    drawEnemies();
+    detectHits();
+    requestAnimationFrame(animate);
+  }
+  animate();
+</script>
 </body>
 </html>
